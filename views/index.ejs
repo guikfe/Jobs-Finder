@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<title><%= title %></title>
+
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+	<link rel="stylesheet" href="css/component.css" type="text/css" />
+	<link rel="stylesheet" href="css/mapbox.share.css" type="text/css" />
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+
+ 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="ext/mapbox.jquery.geocoder.js"></script>
+	<script src="ext/jquery-gmaps-latlon-picker.js"></script>
+	<script src="js/mustache.min.js"></script>
+	<script src="js/oms.min.js"></script>
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-42927233-1', 'af.cm');
+	ga('send', 'pageview');
+	</script>
+
+	<script id="job" type="text/html">
+		<h1>{{ startupname }}</h1>
+		<h3>{{ title }}</h3>
+		{{#contact}}<div><b>Contact:</b> <a href="mailto:{{ contact }}">{{ contact }}</a></div>{{/contact}}
+		{{#siteurl}}<div><b>Site URL:</b> <a href="{{ siteurl }}" target="_blank">{{ siteurl }}</a></div>{{/siteurl}}
+		{{#infourl}}<div><b>More info:</b> <a href="{{infourl}}" target="_blank">{{ infourl }}</a></div>{{/infourl}}
+		{{#weare}}<div><b>We Are:</b> <span>{{ weare }}</span></div>{{/weare}}
+		{{#wewant}}<div><b>We Want:</b> <span>{{ wewant }}</span></div>{{/wewant}}
+		{{#category}}<div><b>Category:</b> <span>{{ category }}</span></div>{{/category}}
+	</script>
+</head>
+
+<body class="left">
+	<div id="branding"></div>
+	<div id="content">
+		<div class="limiter">
+
+			<div id="about">
+				<img style='float:left;' src='img/logo_retina.png' width='49' height'39' />
+				<h1 class='map-title'>Getajob</h1>
+				<p class='description'>Ever wanted to work abroad? Choose a location and make this dream come true!</p>
+				<div id="markerfilters" class="clearfix section">
+					<a class="markerfilter selected" href="#all">All</a>
+				</div>
+			</div>
+
+			<!-- geocoder -->
+			<div data-control='geocode' data-map="map" class="clearfix section" id="search">
+					<input placeholder='Search for an address' type="text" id="search-address">
+					<input type="submit" id="search-address-btn" value="GO">
+					<div id='geocode-error'></div>
+			</div>
+
+			<div id="add-job">
+				<button class="add-job-btn">Place a Job!</button>
+			</div>
+
+
+		</div>
+		<div id="newsletter-text">
+			<!-- Begin MailChimp Signup Form -->
+			<!-- <link href="http://cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css"> -->
+			<style type="text/css">
+			#mc_embed_signup{clear:left; font:14px Helvetica,Arial,sans-serif; }
+			#mce-EMAIL{width:178px; }
+			/* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+			We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+			</style>
+			<div id="mc_embed_signup">
+				<form action="http://newsbox.us7.list-manage.com/subscribe/post?u=228fd85f8f8d553b897885484&amp;id=cfc4aecd69" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+					<h2 for="mce-EMAIL">Join our newsletter!</h2>
+					<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+					<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+				</form>
+			</div>
+
+			<!--End mc_embed_signup-->
+			<div id="contact">
+				<h2>Contact</h2>
+				<ul>
+					<li><a href="mailto:guilhermekfe@outlook.com">Email</a></li>
+					<li><a href="https://www.facebook.com/guilhermekfe" target="_blank">Facebook</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="paypal">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="hosted_button_id" value="XWPEJZYBBMWUU">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+	</form>
+
+	<div id="map" class="map"></div>
+
+    <!-- MODAL BEGIN -->
+    <div class="md-modal md-effect-15" id="modal">
+    	<div class="md-content">
+    		<h3>Place a Job!</h3>
+    		<div>
+    			<p>Add the info related to your job, if you need more fields, contact us!</p>
+
+    			<form id="job-form">
+    				<label for="startup-name">Startup Name:</label><input id="startup-name" type="text" name="startupname">
+    				<label for="site-url">Site URL:</label><input id="site-url" type="text" name="siteurl">
+    				<label for="contact">Contact:</label><input id="contact" type="text" name="contact">
+    				<label for="category">Category:</label>
+    				<br>
+    				<select name="category" id="category">
+    					<option value="programming">Programming</option>
+    					<option value="design">Design</option>
+    					<option value="business">Business/Exec</option>
+    					<option value="misc">Miscellaneous</option>
+    					<option value="support">Custormer Service/Support</option>
+    				</select>
+    				<br>
+    				<label for="we-are">We are:</label><textarea name="weare" id="we-are" cols="70" rows="3"></textarea>
+    				<label for="we-want">We want:</label><textarea name="wewant" id="we-want" cols="70" rows="3"></textarea>
+    				Address: <div id="map"></div>
+    				<fieldset class="gllpLatlonPicker">
+    					<input type="text" class="gllpSearchField" onkeypress="return searchAddress(event)">
+    					<input type="button" class="gllpSearchButton" value="search">
+    					<div class="gllpMap">Google Maps</div>
+    					<input type="hidden" class="gllpLatitude" value="40" name="lat">
+    					<input type="hidden" class="gllpLongitude" value="-100" name="lon">
+    					<input type="hidden" class="gllpZoom" value="3"/>
+    				</fieldset>
+
+    				<div class="center">
+    					<input class="md-close" type="button" value="Close me">
+    					<input class="save-job-btn" type="button" value="Save job">
+    				</div>
+    			</form>
+
+    		</div>
+    	</div>
+    </div>
+
+    <div class="md-overlay"></div>
+    <!-- MODAL END -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
